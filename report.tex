@@ -1,0 +1,576 @@
+\documentclass[12pt]{article}
+\usepackage[a4paper, margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{tabularx}
+\usepackage[colorlinks=true, linkcolor=blue, urlcolor=blue, citecolor=blue]{hyperref}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{tcolorbox}
+\usepackage{enumitem}
+\usepackage{jupynotex}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{caption}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{green!60!black},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    captionpos=b
+}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\footnotesize\ttfamily,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2
+}
+\lstset{style=mystyle}
+
+% Customize section number font size
+\titleformat{\section}[block]
+  {\normalfont\large\bfseries} % font for title
+  {\large\thesection}{1em} {}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Shreshtha, Manvi, Uma}
+\lhead{DAI Assignment - 1}
+\cfoot{\thepage}
+\title{Data Analysis and Interpretation \\ASSIGNMENT - 1\\ REPORT}
+\author{Shreshtha Gupta (Roll No. 24B1033) \\ Manvi Mehta (Roll No. 24B1059) \\ Uma Kumari (Roll No. 24B1026)}
+
+
+\begin{document}
+\maketitle
+\tableofcontents 
+\newpage
+\section{Instructions to run our code}
+\section{Question 1}
+\subsection{Graphs and Interpretation}
+\subsubsection{Fraction f = $30\%$}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\linewidth]{f30.png}
+\end{figure}
+\begin{itemize}
+    \item The mean squared value between y and $y_{median}$ is \textbf{20.492}.
+    \item The mean squared value between y and $y_{mean}$ is \textbf{58.446}.
+    \item The mean squared value between y and $y_{quartile}$ is \textbf{ 0.013}.
+\end{itemize}
+\subsubsection{Fraction f = $60\%$}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\linewidth]{f60.png}
+\end{figure}
+\begin{itemize}
+    \item The mean squared value between y and $y_{median}$ is \textbf{ 393.333}.
+    \item The mean squared value between y and $y_{mean}$ is \textbf{216.909}.
+    \item The mean squared value between y and $y_{quartile}$ is \textbf{66.253}.
+\end{itemize}
+
+\subsection{Analysis}
+As seen with various random values, we saw \textbf{Quartile Mean} produced better relative mean squared error.
+    \\
+Quartile Mean gives the least relative mean squared error because:
+\begin{itemize}
+    \item \textbf{Why quartile is better than mean? - More robust to outliers} \\
+    Mean is highly sensitive to extreme values or outliers, and henceforth gives a large MSE.
+
+    \item \textbf{Why quartile is better than median? - Upper Tail Contamination}\\
+    If the fraction of the corrupted data is considerably low (approximately $<20 \% $), then the median produces better relative mean squared error. But, for the given values of fraction of corruption(f=$30\%$ and f=$60\%$), quartile seemed to produce lower relative mean squared error. 
+      \\  The main reason for this is that the corruption in the given problem is upper tail, i.e. noise or outliers are big positive values (100 to 120 in our case). A lower quartile ignores upper tail outliers more so compared to the median, and thus is affected lesser. Median works better for a lower fraction of corruption because the median is closer to the original array's values and thus, when not significantly affected by upper tail contaminators, it performs more accurately.
+
+
+\end{itemize}
+\section{Question 2}
+
+\subsection{Formulaes Used}
+\subsubsection{How to update Mean?}
+
+\begin{align*}
+\text{OldMean} & = \frac{\sum_{i=1}^{n} x_i}{n} \\
+\sum_{i=1}^{n} x_i & = n \times \text{OldMean} \\
+\text{New sum of all numbers} & = n \times \text{OldMean} + \text{NewDataValue} \\
+\text{NewMean} & = \frac{\text{New sum of all numbers}}{n+1} \\
+\text{NewMean} & = \frac{n \times \text{OldMean} + \text{NewDataValue}}{n+1}
+\end{align*}
+\subsubsection{How to update Median?}
+\textbf{If $n$ is even:}
+\[
+\text{newMedian} =
+\begin{cases}
+A\left( \frac{n}{2} \right), & \text{if } \text{NewDataValue} \leq A\left( \frac{n}{2} \right) \\[8pt]
+A\left( \frac{n}{2} + 1 \right), & \text{if } \text{NewDataValue} \geq A\left( \frac{n}{2} + 1 \right) \\[8pt]
+\text{NewDataValue}, & \text{otherwise}
+\end{cases}
+\]
+
+\textbf{If $n$ is odd:}
+\[
+\text{newMedian} =
+\begin{cases}
+\dfrac{A\left( \frac{n-1}{2} \right) + \text{oldMedian}}{2}, & \text{if } \text{NewDataValue} \leq A\left( \frac{n-1}{2} \right) \\[12pt]
+\dfrac{A\left( \frac{n+3}{2} \right) + \text{oldMedian}}{2}, & \text{if } \text{NewDataValue} \geq A\left( \frac{n+3}{2} \right) \\[12pt]
+\dfrac{\text{NewDataValue} + \text{oldMedian}}{2}, & \text{otherwise}
+\end{cases}
+\]
+\subsubsection{How to update Standard Deviation?}
+\begin{align*}
+(\text{OldStd})^2 & = \frac{\sum_{i=1}^{n} (x_i - \text{OldMean})^2}{n-1} \\
+\text{where } x_i & = \text{numbers in original array A} \\
+(\text{OldStd})^2 & = \frac{\sum_{i=1}^{n} x_i^2 + (\text{OldMean})^2 - 2x_i \text{(OldMean)}}{n-1} \\
+& = \frac{\left(\sum_{i=1}^{n} x_i^2\right) + n(\text{OldMean})^2 - 2(\text{OldMean})\sum_{i=1}^{n} x_i}{n-1} \\
+& = \frac{\left(\sum_{i=1}^{n} x_i^2\right) + n(\text{OldMean})^2 - 2(\text{OldMean})n(\text{OldMean})}{n-1} \quad \left( \text{OldMean} = \frac{\sum_{i=1}^{n} x_i}{n} \right) \\
+& = \frac{\sum_{i=1}^{n} x_i^2 - n(\text{OldMean})^2}{n-1} \quad \cdots (1)
+\end{align*}
+
+\begin{align*}
+\sum_{i=1}^{n} x_i^2 & = \text{sum of squares of numbers in original array} \\
+& = (n-1)(\text{OldStd})^2 + n(\text{OldMean})^2
+\end{align*}
+
+New sum of squares of numbers in original array
+\begin{align*}
+& = \sum_{i=1}^{n} x_i^2 + (\text{NewDataValue})^2 \\
+& = (n-1)(\text{OldStd})^2 + n(\text{OldMean})^2 + (\text{NewDataValue})^2
+\end{align*}
+
+\begin{align*}
+(\text{NewStd})^2 & = \frac{\sum_{i=1}^{n+1} x_i^2 - (n+1)(\text{NewMean})^2}{n} \quad (\text{replacing $n$ by $n+1$ in eq.(1)}) \\
+& = \frac{(n-1)(\text{OldStd})^2 + n(\text{OldMean})^2 + (\text{NewDataValue})^2 - (n+1)(\text{NewMean})^2}{n}
+\end{align*}
+
+\subsection{Some data}
+
+
+\subsection{How I updated the histogram of A?}
+When we update a histogram to include a new value, then we have to loop through the lower bounds of every bin in the histogram and when we find a lower bound of a bin which is larger than the value then we add the value to the bin below that. If the value is lower than the lower limits of all the bins then we can create a bin below all others for this element. If the element  is larger than all the lower limits then we have to check if it is smaller than the highest limit of the highest bin. If it is lesser then we add the element to the highest bin otherwise we create a bin higher than all other bins for this element
+\section{Question 3}
+
+Considering two events $A$ and $B$.
+
+\noindent
+\textbf{Given:}
+\begin{align}
+    P(A) &\ge 1 - q_1 \tag{1} \\[2mm]
+    P(B) &\ge 1 - q_2 \tag{2}
+\end{align}
+
+\noindent
+\textbf{To prove:}
+\[
+    P(A \cap B) \ge 1 - (q_1 + q_2)
+\]
+
+\subsection*{Proof:}
+
+From the axioms of probability, we know:
+\begin{equation}
+    P(A) + P(A^c) = 1
+    \tag{3}
+\end{equation}
+Here, $A^c$ denotes the complement of $A$.
+
+From Eq.~(1) and Eq.~(3):
+\begin{equation}
+\begin{aligned}
+& 1 - P(A^c) \ge 1 - q_1 \\
+\Rightarrow\quad & P(A^c) \le q_1
+\end{aligned}
+\tag{4}
+\end{equation}
+    
+
+Similarly, from Eq.~(2) and Eq.~(3):
+\begin{equation}
+\begin{aligned}
+&1 - P(B^c) \ge 1 - q_2 \\
+\Rightarrow\quad &P(B^c) \le q_2
+\end{aligned}
+\tag{5}
+\end{equation}
+
+From De Morgan's law:
+\[
+    (A \cap B)^c = A^c \cup B^c
+\]
+
+Taking probability on both sides:
+\[
+    P\big((A \cap B)^c\big) = P(A^c \cup B^c)
+\]
+
+But from Eq.~(3):
+\[
+    P\big((A \cap B)^c\big) = 1 - P(A \cap B)
+\]
+
+Thus:
+\begin{equation}
+        P(A^c \cup B^c) = 1 - P(A \cap B)
+        \tag{6}
+\end{equation}
+
+From Boole's inequality:
+\begin{equation}
+        P(A^c \cup B^c) \le P(A^c) + P(B^c)
+        \tag{7}
+\end{equation}
+
+Adding Eq.~(4) and Eq.~(5):
+\begin{equation}
+        P(A^c) + P(B^c) \le q_1 + q_2
+        \tag{8}
+\end{equation}
+So, from Eq.~(7) and Eq.~(8), We have:
+\[
+\begin{aligned}
+& P(A^c \cup B^c) \le P(A^c) + P(B^c) \le q_1 + q_2 \\
+\Rightarrow\quad & P(A^c \cup B^c) \le q_1 + q_2
+\end{aligned}
+\]
+Substituting value from Eq.~(6):
+\[
+\begin{aligned}
+1 - P(A \cap B) \le q_1 + q_2 \\
+\Rightarrow\quad P(A \cap B) \ge 1 - (q_1 + q_2)    
+\end{aligned}
+\]
+Hence proved.
+
+
+\section{Question 4}
+\noindent
+\textbf{Given:}
+\begin{align*}
+&\text{Total number of buses in the town} = 100, \\
+&\text{Total number of red buses in the town} = 1, \\
+&\text{Total number of blue buses in the town} = 99, \\
+&\% \text{ times XYZ sees red object as red} = 99\%, \\
+&\% \text{ times XYZ sees blue object as red} = 2\%.
+\end{align*}
+
+\noindent
+Let the bus which caused the accident be $B_x$.  
+\begin{align*}
+& B_{xR}: \quad B_x \ \text{is a red bus}, \\
+& B_{xB}: \quad B_x \ \text{is a blue bus}, \\
+& XYZ_{RR}: \quad \text{XYZ saw a red bus as red}, \\
+& XYZ_{BR}: \quad \text{XYZ saw a blue bus as red}.
+\end{align*}
+
+\noindent
+Assuming chances of an accident caused by any bus are equiprobable. So,
+\[
+P(B_x) = \frac{1}{100}
+\]
+
+\noindent
+As there are $99$ blue buses:
+\[
+P(B_{xB}) = 99 \times \frac{1}{100} = \frac{99}{100}.
+\]
+Similarly, for a red bus:
+\[
+P(B_{xR}) = 1 \times \frac{1}{100} = \frac{1}{100}.
+\]
+\\
+\noindent
+\textbf{By Bayes' Rule, We know:}
+\[
+P(A \mid B) = \frac{P(A \cap B)}{P(B)}.
+\]
+
+\noindent
+We need:
+\[
+P(B_{xR} \mid XYZ_{RR}) 
+= \frac{P(B_{xR} \cap XYZ_{RR})}{P(XYZ \text{saw a red bus})}.
+\]
+
+\noindent
+To find $P(XYZ \text{saw a red bus})$:
+\[
+P(XYZ \text{saw a red bus}) = P(B_{xR} \cap XYZ_{RR}) + P(B_{xB} \cap XYZ_{BR}).
+\]
+
+\noindent
+Since bus color and XYZ's observation are independent events. We know for two independent events,
+\[
+P(A \cap B) = P(A) \cdot P(B).
+\]
+
+\noindent
+Thus:
+\[
+P(B_{xR} \mid XYZ_{RR}) = 
+\frac{P(B_{xR}) \cdot P(XYZ_{RR} \mid B_{xR})}
+{P(B_{xR}) \cdot P(XYZ_{RR}) + P(B_{xB}) \cdot P(XYZ_{BR})}
+\]
+
+\noindent
+Substituting the values:
+\begin{align*}
+P(B_{xR} \mid XYZ_{RR}) 
+&= \frac{\frac{1}{100} \times \frac{99}{100}}
+{\frac{1}{100} \times \frac{99}{100} + \frac{99}{100} \times \frac{2}{100}} \\[4pt]
+&= \frac{\frac{99}{10^4}}
+{\frac{99}{10^4} + \frac{198}{10^4}} \\[4pt]
+&= \frac{1}{1+2} \\[4pt]
+&= \frac{1}{3} \\[4pt]
+&\approx 0.33.
+\end{align*}
+
+\noindent
+\textbf{Answer:} The probability that the bus was really a red one, when XYZ observed it to be red, is $0.33$.
+\section{Question 5}
+\textbf{Given:}
+\[
+\begin{aligned}
+&\text{Number of residents in village} = 100, \\
+&\%\text{ residents favouring candidate A} = 95\%, \\
+&\%\text{ residents favouring candidate B} = 5\%.
+\end{aligned}
+\]
+
+Probability that a randomly chosen villager favours candidate A:
+\[
+P(A) = \frac{95}{100}
+\]
+Probability that a randomly chosen villager favours candidate B:
+\[
+P(B) = \frac{5}{100}
+\]
+
+We want:
+\[
+P(\text{exit poll is accurate}) = P(\text{exit poll's expected winner is A})
+\]
+
+\noindent For $P(\text{expected winner of exit poll is A})$:
+\[
+P(\text{2 out of 3 people asked favoured A}) + P(\text{3 out of 3 people asked favoured A})
+\]
+\begin{align*}
+P(\text{accurate}) 
+&= \left(\frac{95}{100} \cdot \frac{95}{100} \cdot \frac{5}{100} \cdot 3\right) 
+  + \left( \frac{95}{100} \cdot \frac{95}{100} \cdot \frac{95}{100} \right) \\
+&= \left(\frac{95}{100}\right)^2 \left( \frac{15}{100} + \frac{95}{100} \right) \\
+&= \left(\frac{95}{100}\right)^2 \cdot \frac{110}{100} \\
+&= 0.99275
+\end{align*}
+\[
+\boxed{\text{Accuracy of the exit poll with 100 residents} = 0.99275}
+\]
+
+---
+
+\noindent \textbf{Now, if}
+\[
+\text{Number of residents in village} = 10000, \quad
+\%\text{ favouring A} = 95\%, \quad
+\%\text{ favouring B} = 5\%.
+\]
+
+Probability that a randomly chosen villager favours candidate A:
+\[
+P(A) = \frac{95}{100} \cdot \frac{10000}{10000} = \frac{95}{100}
+\]
+Probability that a randomly chosen villager favours candidate B:
+\[
+P(B) = \frac{5}{100} \cdot \frac{10000}{10000} = \frac{5}{100}
+\]
+
+As the probability of a randomly chosen villager favouring candidate A or B remains the same, i.e., does not depend on the number of villagers:
+
+\[
+\boxed{\textbf{Accuracy of exit poll is always 0.99275 regardless of number of residents.}}
+\]
+
+\section{Question 6}
+\subsection{6(a)}
+
+No. of voters in the village $= m$.
+
+Probability that people prefer $A$ over $B = p = \frac{k}{m}$.
+
+\[
+q(S) = \frac{\sum\limits_{i \in S} x_i}{n}
+\]
+
+\textbf{To prove}:
+\[
+\frac{\sum\limits_{S} q(S)}{m^n} = p
+\]
+
+Let $A_i$ denote the subset of $S$ where $i$ people voted for $A$.
+
+Hence, $S$ is union of all such subsets:
+\[
+S = \bigcup_{i=0}^{n} A_i
+\]
+
+As given in question:
+\[
+q(S) = \frac{\sum\limits_{i \in S} x_i}{n}
+\]
+where $x_i = 1$ if the $i^{th}$ voter voted for $A$ and $0$ if he/she voted for $B$.
+
+So,
+\[
+q(A_i) = \frac{i}{n}
+\]
+
+No. of people who prefer $A = \text{total voters} \times \text{probability of people preferring $A$}$:
+\[
+= m \times p
+\]
+\[
+= pm
+\]
+
+No. of people who prefer $B = m - pm$.
+
+No. of sets in $A_i = \binom{n}{i} (pm)^i (m - pm)^{n-i}$
+\[
+|A_i| = \binom{n}{i} (pm)^i (m - pm)^{n-i}\] \quad \text{(because we need to choose $i$ people who prefer $A$ from the $n$ voters of set $S$})
+
+
+---
+
+So for all these sets in $A_i$ have:
+\[
+q(S) = \frac{i}{n}
+\]
+
+\begin{align*}
+\sum_{S} q(S) 
+    &= \sum_{A_0} q(A_0) + \sum_{A_1} q(A_1) + \dots + \sum_{A_n} q(A_n) \\
+    &= \frac{0}{n} \cdot \frac{|A_0|}{m^n} + \frac{1}{n} \cdot \frac{|A_1|}{m^n} + \dots + \frac{n}{n} \cdot \frac{|A_n|}{m^n} \\
+    &= \frac{0}{n} \cdot \binom{n}{0}(pm)^0(m-pm)^n + \frac{1}{n} \cdot \binom{n}{1}(pm)^1(m-pm)^{n-1} + \dots + \frac{n}{n} \cdot \binom{n}{n}(pm)^n(m-pm)^0 \\
+    &= \frac{\sum\limits_{r=0}^{n} n \binom{n}{r}(pm)^r(m-pm)^{n-r}}{n \times m^n} \\
+    &= \frac{\sum\limits_{r=0}^{n} n (pm)^r(m-pm)^{n-r}}{n \times m^n} \\
+    &= \frac{n \sum\limits_{r=1}^{n} \binom{n-1}{r-1}(pm)^r(m-pm)^{n-r}}{n \times m^n} \\ 
+    &= \frac{n(pm) \sum\limits_{r=1}^{n} \binom{n-1}{r-1}(pm)^{r-1}(m-pm)^{n-r}}{n \times m^n} \hfill \text{(by $r\binom{n}{r} = n\binom{n-1}{r-1})$ }\\
+    &= \frac{n(pm) \cdot (pm + m - pm)^{n-1}}{n \times m^n} 
+       \hfill \text{(by $(y+z)^n = \sum_{r=0}^n \binom{n}{r} y^r z^{n-r}$)} \\
+    &= \frac{(pm) \cdot m^{n-1}}{m^n} \\
+    &= \frac{p \cdot m^n}{m^n} \\
+    &= p
+\end{align*}
+
+Hence proved.
+\subsection{6(b)}
+\textbf{To prove:}  
+\[
+\frac{\sum\limits_S q^2(S)}{m^n} = \frac{p}{n} + \frac{p^2 (n-1)}{n}
+\]
+
+Here, for all sets in $A_i$,  
+\[
+q^2(S) = \big(q(S)\big)^2 = \left( \frac{i}{n} \right)^2 = \frac{i^2}{n^2}
+\]
+
+\begin{align*}
+\frac{\sum\limits_S q^2(S)}{m^n} 
+&= \frac{\sum\limits_{A_0} q^2(A_0)}{m^n} + \frac{\sum\limits_{A_1} q^2(A_1)}{m^n} + \dots + \frac{\sum\limits_{A_n} q^2(A_n)}{m^n} \\[4pt]
+&= \frac{\sum\limits_{A_0} \frac{0^2}{n^2} + \sum\limits_{A_1} \frac{1^2}{n^2} + \dots + \sum\limits_{A_n} \frac{n^2}{n^2}}{m^n} \\[4pt]
+&= \frac{\frac{0^2}{n^2} |A_0| + \frac{1^2}{n^2} |A_1| + \dots + \frac{n^2}{n^2} |A_n|}{m^n} \\[4pt]
+&= \frac{0^2 \binom{n}{0} (pm)^0 (m-mp)^n + 1^2 \binom{n}{1} (pm)^1 (m-mp)^{n-1} + \dots + n^2 \binom{n}{n} (pm)^n (m-mp)^0}{n^2 m^n} \\[4pt]
+&= \frac{\sum\limits_{r=0}^n \binom{n}{r} (pm)^r (m-mp)^{n-r} \cdot r^2}{n^2 m^n} \\[4pt]
+&= \frac{n \sum\limits_{r=1}^n \binom{n-1}{r-1}  (pm)^r (m-mp)^{n-r} \cdot r}{n^2 m^n} \hfill \text{(by $r\binom{n}{r} = n\binom{n-1}{r-1})$ }\\[4pt] 
+&= \frac{\sum\limits_{r=1}^n \binom{n-1}{r-1} (r-1+1)(pm)^r (m-mp)^{n-r} \cdot r}{n m^n} \\[4pt]
+&= \frac{\sum\limits_{r=p}^n \binom{n-1}{r-1} (r-1)(pm)^r (m-mp)^{n-r} + \sum\limits_{r=1}^n \binom{n-1}{r-1} (pm)^r \cdot (m-pm)^{n-r}}{n m^n} \\[4pt]
+&= \frac{(n-1) \sum\limits_{r=2}^n \binom{n-2}{r-2} (pm)^r (m-mp)^{n-r} + (pm) \sum\limits_{r=1}^n \binom{n-1}{r-1} (pm)^{r-1} (m-mp)^{n-r}}{n m^n} \\[4pt]
+&= \frac{(n-1)(pm)^2 \sum\limits_{r=2}^n \binom{n-2}{r-2} (pm)^{r-2} (m-mp)^{n-r} + (pm) \binom{n-1}{0}(pm + A_1)(pm)^{n-1}}{n m^n}\\[4pt]
+&= \frac{(n-1)p^2 m^2 (pm + m - mp)^{n-2} + p m \times m^{n-1}}{n m^n} \\[4pt]
+&= \frac{(n-1)p^2 m^2 m^{n-2} + p m^n}{n m^n} \\[4pt]
+&= \frac{(n-1)p^2 + p}{n} \\[4pt]
+&= \frac{p}{n} + \frac{(n-1)p^2}{n}
+\end{align*}
+
+Hence proved.
+\subsection{6(c)}
+\textbf{(c) To prove:} 
+\[
+\frac{\sum\limits_S \left( q(S) - p \right)^2}{m^n} 
+= \frac{p(1-p)}{n}
+\]
+\[
+\frac{\sum\limits_S \left( q(S) - p \right)^2}{m^n} 
+= \frac{\sum\limits_S q^2(S) + p^2 - 2p q(S)}{m^n}
+\]
+
+\begin{align*}
+\frac{\sum\limits_S \left( q(S) - p \right)^2}{m^n} 
+&= \frac{\sum\limits_S q^2(S)}{m^n} + \frac{\sum\limits_S p^2}{m^n} - \frac{\sum\limits_S 2p\, q(S)}{m^n}
+\end{align*}
+\begin{align*}
+\frac{\sum\limits_S \left( q(S) - p \right)^2}{m^n} 
+&= \frac{\sum\limits_S q^2(S)}{m^n} + \frac{\sum\limits_S p^2}{m^n} - \frac{2p \sum\limits_S \, q(S)}{m^n}
+\end{align*}
+
+Total no.\ of subsets containing n voters$(S)$ $=$ $m^n$ \quad (from $m$ people we need to choose $n$ values with replacement)  
+
+Using part (a) and (b):  
+\[
+\frac{\sum\limits_S q(S)}{m^n} = p
+\]
+\[
+\frac{\sum\limits_S q^2(S)}{m^n} = \frac{p}{n} + \frac{p^2 (n-1)}{n}
+\]
+
+\begin{align*}
+\frac{\sum\limits_S (q(S) - p)^2}{m^n} 
+&= \frac{p}{n} + \frac{p^2 (n-1)}{n} + \frac{p^2 (m^n)}{m^n} - 2p \times p \\[4pt]
+&= \frac{p}{n} + \frac{p^2 (n-1)}{n} - p^2
+\end{align*}
+
+\begin{align*}
+&= \frac{p + p^2 n - p^2 - p^2 n}{n} \\[4pt]
+&= \frac{p (1 - p)}{n}
+\end{align*}
+
+Hence proved.
+
+\end{document}
