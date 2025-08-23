@@ -1,6 +1,5 @@
 %HW1-QUESTION 2
 
-
 %function to calculate new median
 function [newMedian]= UpdateMedian (oldMedian, NewDataValue, A, n)
     if mod(n,2)==0
