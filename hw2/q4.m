@@ -69,16 +69,19 @@ end
 %plotting the plots
 figure;
 plot(tx_val,corr_coeffs);
-xlabel('tx');
-ylabel('corr_coeffs');
+xlabel('t_x');
+ylabel('\rho');
+title('Corelation Coeffecient vs t_x')
 figure;
 plot(tx_val,qmi);
-xlabel('tx');
-ylabel('qmi');
+xlabel('t_x');
+ylabel('QMI');
+title('QMI vs t_x')
 figure;
 plot(tx_val,mi);
-xlabel('tx');
-ylabel('mi');
+xlabel('t_x');
+ylabel('MI');
+title('MI vs t_x')
 
 %I2=255-I1
 sim2=255-im1;
@@ -111,16 +114,19 @@ for tx = -10:1:10
 end
 figure;
 plot(tx_val,corr_coeffs);
-xlabel('tx');
-ylabel('corr_coeffs');
+xlabel('t_x');
+ylabel('\rho');
+title('Corelation Coeffecient vs t_x (i)')
 figure;
 plot(tx_val,qmi);
-xlabel('tx');
-ylabel('qmi');
+xlabel('t_x');
+ylabel('QMI');
+title('QMI vs t_x (i)')
 figure;
 plot(tx_val,mi);
-xlabel('tx');
-ylabel('mi');
+xlabel('t_x');
+ylabel('MI');
+title('MI vs t_x (i)')
 
 %I2 = 255 ×(I1)^2/max((I1)2) + 1.
 tim2=255*(im1).^2/max(im1(:).^2)+1;
@@ -153,13 +159,16 @@ for tx = -10:1:10
 end
 figure;
 plot(tx_val,corr_coeffs);
-xlabel('tx');
-ylabel('corr_coeffs');
+xlabel('t_x');
+ylabel('\rho');
+title('Corelation Coeffecient vs t_x (ii)')
 figure;
 plot(tx_val,qmi);
-xlabel('tx');
-ylabel('qmi');
+xlabel('t_x');
+ylabel('QMI');
+title('QMI vs t_x (ii)')
 figure;
 plot(tx_val,mi);
-xlabel('tx');
-ylabel('mi');
+xlabel('t_x');
+ylabel('MI');
+title('MI vs t_x (ii)')
