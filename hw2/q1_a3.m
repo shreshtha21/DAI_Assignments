@@ -1,20 +1,21 @@
-% Define p(s) as an element-wise function
-p = @(s) 1 - (1./s).^(1./s);
+%HW2-q1-a-iii
 
-% Evaluate the function p for a range of s values
-sValues = linspace(1, 10, 100);
-pValues = p(sValues);
+%p(s)
+p= @(s) 1-(1./s).^(1./s);
 
-% Plot the results
+sval=1:10; %integer s
+pval=p(sval);
+
+[pmax,idx]=max(pval);
+smax=sval(idx);
+
+%plot
 figure
-plot(sValues, pValues, 'LineWidth', 1.5);
-xlabel('s values');
+stem(sval,pval,'filled');
+xlabel('s values (integer)');
 ylabel('p(s)');
-title('Plot of p(s) vs s');
+title('Plot of p(s) vs integer s');
 grid on;
 hold on;
-
-% Add vertical lines at every integer from 1 to 10
-for k = 1:10
-    xline(k, '--k'); % dashed black vertical line
-end
+plot(smax,pmax,'ro','MarkerSize',8,'MarkerFaceColor','r');
+fprintf('Maximum p(s) ≈ %.6f at integer s = %d\n',pmax,smax);
