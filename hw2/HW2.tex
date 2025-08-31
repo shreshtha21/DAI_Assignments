@@ -1,73 +1,743 @@
-\title{Assignment 2: CS 215}
-\author{}
-\date{Due: 2nd September August before 11:55 pm, 100 points}
-
-\documentclass[11pt]{article}
-
-\usepackage{amsmath,xcolor}
+\documentclass[12pt]{article}
+\usepackage[a4paper, margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{tabularx}
+\usepackage[colorlinks=true, linkcolor=blue, urlcolor=blue, citecolor=blue]{hyperref}
+\usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{tcolorbox}
+\usepackage{enumitem}
+\usepackage{jupynotex}
 \usepackage{hyperref}
-\usepackage{ulem}
-\usepackage[margin=0.5in]{geometry}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{caption}
+\usepackage{forest}
+
+%\pagecolor{yellow!10}
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{green!60!black},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    captionpos=b
+}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\footnotesize\ttfamily,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2
+}
+\lstset{style=mystyle}
+
+% Customize section number font size
+\titleformat{\section}[block]
+  {\normalfont\large\bfseries} % font for title
+  {\large\thesection}{1em} {}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Shreshtha, Manvi, Uma}
+\lhead{DAI Assignment - 2}
+\cfoot{\thepage}
+\title{Data Analysis and Interpretation \\ASSIGNMENT - 2\\ REPORT}
+\author{Shreshtha Gupta (Roll No. 24B1033) \\ Manvi Mehta (Roll No. 24B1059) \\ Uma Kumari (Roll No. 24B1026)}
+\date{}
+
 \begin{document}
 \maketitle
-
-\textbf{All members of the group should work on all parts of the assignment. Copying across groups or from other sources is not allowed. We will adopt a \textbf{zero-tolerance policy} against any violation.}
-\\
-\\
-\textbf{Submission instructions:} 
-\begin{enumerate}
-\item You should type out a report containing all the answers to the written problems in Word (with the equation editor) or using Latex, or write it neatly on paper and scan it. In either case, prepare a single pdf file. 
-\item The report should contain names and roll numbers of all group members on the first page as a header.
-\item Put the pdf file and the code for the programming parts all in one zip file. The pdf should contain the names and ID numbers of all students in the group within the header. The pdf file should also contain instructions for running your code. Name the zip file as follows: A2-IdNumberOfFirstStudent-IdNumberOfSecondStudent-IdNumberofThirdStudent.zip. (If you are doing the assignment alone, the name of the zip file is A2-IdNumber.zip, if there are two students it should be A2-IdNumberOfFirstStudent-IdNumberOfSecondStudent.zip). 
-\item Upload the file on moodle BEFORE 11:55 pm on the due date. We will nevertheless allow and not penalize any submission until 10:00 am on the following day (i.e. 3rd September). No assignments will be accepted thereafter, and your group will get no scores for this assignment. 
-\item Note that only one student per group should upload their work on moodle, though all group members will receive grades. 
-\item Please preserve a copy of all your work until the end of the semester. 
-\end{enumerate}
-
-\textbf{Questions:}
-\textit{In the following problems, you can use basic functions from MATLAB.}
-\begin{enumerate}
-\item Consider you are testing samples (e.g., blood, urine, saliva, etc. During the COVID19 pandemic, the most common method for testing was RT-PCR on nasal or throat mucus.) of $n$ different subjects for a rare disease. Testing each subject independently requires $n$ tests which can be expensive and time-consuming (and unjustifiable since most tests would report negative, i.e. healthy or not diseased). Pooled testing is a technique where you take small portions of the sample of a subset of people and mix them together to create a pool. This pool is tested instead of testing the individual samples. If the pool tests \textbf{negative} (i.e. not diseased), then you can declare all subjects participating in that pool to be healthy -- assuming test results are accurate. Overall, this greatly saves on the number of tests, if the disease is rare. If the pool tests \textbf{positive} (i.e. one or more participating subjects is/are diseased), then more work needs to be done, as we shall see below. Typically, the number of pools is taken to be less than $n$ to save on testing time and resources. We will use our knowledge of probability and statistics to analyze some pooled testing methods. 
-\begin{enumerate}
-\item In a popular technique of group testing, we divide the $n$ subjects into $n/s$ disjoint subsets each containing $s$ subjects. For simplicity, assume that $n$ is divisible by $s$. In round 1, the $n/s$ pools are tested. Participating subjects in a negative pool are declared healthy. Subjects that participated in a positive pool are tested individually in round 2. Let the prevalence rate of the disease (the proportion of people who have the disease) be $p$ where $p \in [0,1]$. Now do as directed. Assume throughout that the test results are accurate. 
-\begin{enumerate}
-\item Prove that the expected total number of tests for this method (counting both round 1 and 2) is $T(s) := n/s + n(1-(1-p)^s)$. 
-\item If $p$ is very small, this equals $n/s + ps$. For what value of $s$, is this expected number the least? What is the expected number of tests in that case? 
-\item What is the maximum value of $p$ for which $T(s) < n$? For this last part, you may need to do some simple numerical computation in MATLAB. \textsf{[3+(2.5+2.5)+4=12 points]}
-\end{enumerate}
-
-\item In another method, round 1 involves testing of $T_1$ pools. A subject participates in a pool with probability $\pi$ independent of the other items and other pools (so the pools may be overlapping in this case). Similar to the earlier method, all subjects that participated in a positive pool are individually tested in round 2. Let the prevalence rate of the disease be $p$. Do as directed. Throughout this exercise, assume that all tests are accurate. Also use the identity $(1-x)^a = e^{-xa}$ for small $x > 0$.
-\begin{enumerate}
-\item What is the probability that a genuinely healthy subject participates in a pool that tests negative? 
-\item For what value of $\pi$ (in terms of $n$ and $p$) is this probability maximized? (Note that we would like this probability to be as high as possible.)
-\item Given this optimal $\pi$, what is the probability that all pools that a genuinely healthy subject participates in, test positive? 
-\item Then what is the expected total number of tests (counting round 1 and round 2)? [Hint: In round 2, what is the expected number of tests of genuinely positive subjects? In round 2, what is the expected number of tests of genuinely negative subjects who happened to participate in all positive pools?] 
-\item For what value of $T_1$ is this expected number minimized? What is the expected number of tests in that case? \textsf{[2 x 5 = 10 points]}
-\end{enumerate}
-\item For $n = 1000$ and $p \in \{10^{-4},5\times10^{-4},0.001,0.005,0.01,0.02,0.05, 0.08,0.1,0.2\}$, plot a graph of the expected number of tests for both methods versus $n$. For the first method, the expected number should be for optimal $s$ and for the second method, it should be for optimal $\pi$ and optimal $T_1$. Include this plot in your report and comment on it. 
-\textsf{[2 points]}
-\end{enumerate}
-
-\item Let $X$ and $Y$ be two independent random variables with PDFs $f_X(.)$ and $f_Y(.)$ respectively. Derive the PDF of the random variable $Z = XY$ in terms of $f_X, f_Y$. (Hint: Look at the discussion forum on moodle where the PDF of $X+Y$ was derived. Follow similar steps.) \textsf{[16 points]}
-
-\item Consider a random variable $X$ with PDF $f_X(.)$. Consider independent samples $\{x_i\}_{i=1}^n$ from this PDF. A student wants to estimate $E(X)$ given these samples. Let the estimated value be $\hat{x}$. Should (s)he consider $\hat{x} := \sum_{i=1}^n x_i/n$ or $\hat{x} := \sum_{i=1}^n f_X(x_i) x_i/n$ as the estimate for $E(X)$? Which one of these is correct and why? To answer the why part, you explain how the other option is incorrect (eg: maybe it is estimating the expectation of some other random variable). \textsf{[10 points]}
-
-\item Read in the images T1.jpg and T2.jpg from the homework folder using the MATLAB function \texttt{imread} and cast them as a double array using the code \begin{verbatim}im = double(imread('T1.jpg');\end{verbatim} These are magnetic resonance images of a portion of the human brain, acquired with different settings of the MRI machine. They both represent the same anatomical structures and are perfectly aligned (i.e. any pixel at location $(x,y)$ in both images represents the exact same physical entity). Consider random variables $I_1, I_2$ which denote the pixel intensities from the two images respectively. Write a piece of MATLAB code to shift the second image along the X direction by $t_x$ pixels where $t_x$ is an integer ranging from -10 to +10. While doing so, assign a value of 0 to unoccupied pixels. For each shift, compute the following measures of dependence between the first image and the \emph{shifted version} of the second image:
+\tableofcontents 
+\newpage
+\section{Instructions to run our code}
+\subsection{Submission Format}
+\begin{forest}
+for tree={%
+    font=\ttfamily,
+    grow'=0,
+    child anchor=west,
+    parent anchor=south,
+    anchor=west,
+    calign=first,
+    edge path={%
+        \noexpand\path [draw, \forestoption{edge}]
+        (!u.south west) +(7.5pt,0) |- (.child anchor) \forestoption{edge label};
+    },
+    before typesetting nodes={%
+        if n=1
+            {insert before={[,phantom]}}
+            {}
+    },
+    fit=band,
+    before computing xy={l=15pt},
+}
+[A1-24B1033-24B1059-24B1026/
+    [Question1/
+        [hw2\_q1\_a\_3.m]
+        [hw2\_q1\_c.m]
+    ]
+    [Question4/
+        [hw2\_q4.m]
+        
+    ]
+    [report.pdf]
+]
+\end{forest}
+\subsection{Detailed Instructions}
 \begin{itemize}
-\item the correlation coefficient $\rho$, 
-\item a measure of dependence called quadratic mutual information (QMI) defined as $\sum_{i_1}\sum_{i_2} (p_{I_1 I_2}(i_1,i_2)-p_{I_1}(i_1)p_{I_2}(i_2))^2$, where $p_{I_1 I_2}(i_1,i_2)$ represents the \emph{normalized} joint histogram (\textit{i.e.}, joint pmf) of $I_1$ and $I_2$ (`normalized' means that the entries sum up to one),
-\item a measure of dependence called the mutual information (MI) defined as $E\left(\log \left( \dfrac{p_{I_1, I_2}}{p_{I_1} p_{I_2}}\right) \right)$ where the expectation is taken jointly over the values of $I_1$ and $I_2$.
+\item First unzip the submission folder. 
+\item To see the results and solutions open report.pdf. 
+\item To view the codes for question 1 open the folder 'Question1'. 
+\item Similarly, to view the code for question 4, open the folder 'Question4'. 
+\item The plots and comments for question 4 are given in report.pdf.
+\end{itemize}\
+
+\section{Question 1}
+\subsection{1(a)}
+\subsubsection{1(a)(i)}
+Number of disjoint subsets $= \dfrac{n}{s}$ \\
+
+Number of subjects in each subset $= s$ \\
+
+Prevalence rate of disease $= p$ \\[1em]
+
+\begin{align*}
+E[\text{total tests}] &= E[\text{tests in round 1}] + E[\text{tests in round 2]} \\
+E[\text{tests in round 1}] &= \frac{n}{s} \\
+E[\text{tests in round 2}] &= E[sA] \quad \text{where A = no. of subsets which are positive} \\
+&= sE[A] \\
+P(\text{a person is healthy}) &= 1-p \\
+P(\text{a pool is positive}) &= 1-P(\text{all subjects are healthy}) \\
+&= 1-(1-p)^s \\
+P(A=i) &= \binom{n/s}{i}\Big(1-(1-p)^s\Big)^i \Big((1-p)^s\Big)^{\tfrac{n}{s}-i} \\
+E[A] &= \sum_{i=0}^{n/s} i \binom{n/s}{i}\Big(1-(1-p)^s\Big)^i \Big((1-p)^s\Big)^{\tfrac{n}{s}-i} \\
+\text{Let } \frac{n}{s} &= t, \quad 1-(1-p)^s = \gamma \\
+E[A] &= \sum_{i=0}^t i \binom{t}{i} \gamma^i (1-\gamma)^{t-i} \\
+&= t \sum_{i=1}^t \binom{t-1}{i-1} \gamma^{i} (1-\gamma)^{t-i} \\
+&= t\gamma \sum_{i=1}^t \binom{t-1}{i-1} \gamma^{i-1}(1-\gamma)^{t-i} \\
+&= t\gamma \sum_{i=0}^{t-1} \binom{t-1}{i} \gamma^{i}(1-\gamma)^{t-1-i} \\
+&= t\gamma ( \gamma + (1-\gamma))^{t-1} \\
+&= t\gamma \\
+&= \frac{n}{s}\Big[1-(1-p)^s\Big] \\
+E[\text{tests in round 2}] &= sE[A] = n\Big[1-(1-p)^s\Big] \\
+E[\text{total tests}] &= \frac{n}{s} + n\Big[1-(1-p)^s\Big]
+\end{align*}
+\subsubsection{1(a)(ii)}
+\begin{align*}
+T(s) &= \frac{n}{s} + n\big[1-(1-p)^s\big] \\
+p &\ll 1 \\
+\text{By binomial approximation} \\
+ \ (1-x)^n &\approx 1-nx \\
+T(s) &= \frac{n}{s} + n\Big[1-(1-ps)\Big] \\
+&= \frac{n}{s} + n(ps) \\
+&= \frac{n}{s} + nps
+\end{align*}
+For expected number to be least at a specific $s$,
+\begin{align*}
+T'(s) &= 0 \\
+-\frac{n}{s^2} + np &= 0 \\
+s &= \frac{1}{\sqrt{p}} \\
+T''(s) &= \frac{2n}{s^3} > 0 \quad \text{for } s=\frac{1}{\sqrt{p}} \\
+\implies T(s) &\text{ is least at } s=\frac{1}{\sqrt{p}}
+\end{align*}
+
+
+\begin{center}
+\boxed{\text{The expected number is least for } s = \frac{1}{\sqrt{p}}}
+\end{center}
+
+Expected total number of tests for this $s$:
+\begin{align*}
+s &= \frac{1}{\sqrt{p}} \\
+\frac{n}{1/\sqrt{p}} + np\left(\frac{1}{\sqrt{p}}\right) 
+&= n\sqrt{p} + n\sqrt{p} \\
+&= 2n\sqrt{p}
+\end{align*}
+
+\begin{center}
+\boxed{\text{Expected number of tests in this case = } 2n\sqrt{p}}
+\end{center}
+
+\subsubsection{1(a)(iii)}
+\begin{align*}
+T(s) &< n \\
+\frac{n}{s} + n\big[1-(1-p)^s\big] &< n \\
+\frac{1}{s} + 1-(1-p)^s &< 1 \\
+\frac{1}{s} &< (1-p)^s \\
+\left(\frac{1}{s}\right)^{1/s} &< 1-p \\
+\end{align*}
+\begin{center}
+\boxed{\; 
+p &< 1-\left(\frac{1}{s}\right)^{1/s} \;}
+\end{center}\\
+Since the question demands the maximum value of $p$ for which $T(s)<n$, and we have arrived at the above inequation where the upper-bound of $p$ is solely dependent on $s$. Thus we shall plot $p$ against $s$ and find the maximum possible value of $p$ for a valid integer value of $s$. 
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=12cm]{q1a3hw2.png}
+\end{figure}
+From the graph it is evident that the maximum value of $p$ is achieved at $s=3$ which is 0.306639.
+\vspace{-1cm}
+\begin{center}
+\[
+\boxed{\text{Maximum value of } p \text{ for which } T(s) < n \text{ at all values of } s \;=\; 0.306639}
+\]
+\end{center}
+
+\subsection{1(b)}
+\subsubsection{1(b)(i)}
+Let the probability that a subject participates in a pool be $\pi$,  
+and the probability that a subject has the disease (is infected) be $p$. \\
+
+As participating in a pool and having the disease are two independent events, we have
+\[
+P(\text{Subject participates in a pool } \cap \text{ Subject has the disease}) = \pi p.
+\]
+
+Now,
+
+$P(\text{Subject not participating in a pool OR Subject not having the disease})$ \\
+$= 1 - P(\text{Subject participating in a pool } \cap \text{ Subject has the disease}) \\
+$= 1 - \pi p$.
+
+(Considering that the genuinely healthy subject is not in the $n$ subjects) \\
+For a pool to be negative, each person must either not be participating in the pool, or should be genuinely healthy.  
+So, for each person:
+\[
+(1 - \pi p)(1 - \pi p)\cdots(1 - \pi p) \quad \text{(n times)} = (1 - \pi p)^n.
+\]
+
+Thus, the probability of the pool being negative is
+\[
+(1 - \pi p)^n.
+\]
+
+Now, the probability of a genuinely healthy subject participating in the pool is $\pi$.  
+
+Since a subject participating in the pool and the pool being negative are independent events, we get
+\[
+P(\text{Genuinely healthy subject participates in a pool that tests negative})
+= \pi (1 - \pi p)^n.
+\]
+As $\pi p$ is small and $\pi p > 0$, we have the identity, 
+\[
+(1-x)^a = e^{-xa} \text{ for small } x>0.
+\]
+
+So,
+\[
+\pi [1 - \pi p]^n = \pi e^{-n\pi p}.
+\]
+
+\[
+\boxed{
+\begin{aligned}
+\text{Probability that a genuinely healthy subject} \\
+\text{participates in a pool that tests negative } 
+&= \pi e^{-n\pi p}
+\end{aligned}
+}
+\]
+
+\subsubsection{1(b)(ii)}\
+Of course, we want this probability to be as high as possible to reduce the expected number of tests.
+
+From $1b(i)$, We have,
+\[
+P = \pi e^{-n\pi p}
+\]
+
+To maximize \( P \) w.r.t. \( \pi \):
+\[
+\frac{dP}{d\pi} = 0, \qquad \frac{d^2P}{d\pi^2} < 0
+\]
+
+Now,
+\begin{align*}
+\frac{dP}{d\pi} &= -n\pi p e^{-n\pi p} + e^{-n\pi p} \quad &\text{[By Chain Rule]} \\
+\frac{dP}{d\pi} &= e^{-n\pi p} (1 - n\pi p) \\[6pt]
+\end{align*}
+\begin{align*}
+    \text{For critical points: } & 1 - n\pi p = 0 \\
+\Rightarrow \pi &= \frac{1}{np} \quad &\text{[As $e^x > 0 \ \forall x \in \mathbb{R}$]} \\[10pt]
+\frac{d^2P}{d\pi^2} &= -np e^{-n\pi p} - np \Big[e^{-n\pi p}-np\pi e^{-n\pi p}\Big] \quad &\text{[By Chain Rule]} \\[8pt]
+\text{For } \pi &= \frac{1}{np}: \\
+\frac{d^2P}{d\pi^2} &= -\frac{np}{e} + np \left(\frac{1}{e}-\frac{1}{e}\right) \\
+\frac{d^2P}{d\pi^2} &= -\frac{np}{e} \\
+\frac{d^2P}{d\pi^2} &< 0
+\end{align*}
+
+\[
+\boxed{\pi = \frac{1}{np} \text{ maximizes } P}
+\]
+\subsubsection{1(b)(iii)}
+Let the number of pools that a genuinely healthy subject (GHS) participates in be $k$.
+
+\[
+P(\text{GHS will participate in $k$ pools}) = \pi^k
+\]
+\[
+P(\text{GHS won't participate in $(T_1-k)$ pools}) = (1-\pi)^{T_1-k}, 
+\quad \text{(as total pools = $T_1$)}
+\]
+
+\[
+P[\text{GHS participate and pool tests positive}] 
+= 1 - P[\text{GHS participate and pool tests negative}]
+\]
+
+From part 1(b)(i), we have
+\[
+P[\text{GHS participate and pool tests negative}] = \pi e^{-n\pi p}
+\]
+\[
+P[\text{GHS participate and pool tests positive}] 
+= 1 - \pi e^{-n\pi p}
+\]
+
+Hence,
+\[
+P[\text{$k$ pools that GHS participate test positive}] 
+= \binom{T_1}{k} \pi^k (1-\pi)^{T_1-k} 
+\left(1 - \pi e^{-n\pi p}\right)^k
+\]
+
+Now, $k$ can be $1$ to $T_1$, so
+\[
+P = \sum_{k=1}^{T_1} \binom{T_1}{k} \pi^k (1-\pi)^{T_1-k} 
+\left(1 - \pi e^{-n\pi p}\right)^k
+\]
+
+\[
+= \sum_{k=1}^{T_1} \binom{T_1}{k} 
+\left[\pi \left(1 - \pi e^{-n\pi p}\right)\right]^k 
+(1-\pi)^{T_1-k}
+\]
+
+\[
+= \sum_{k=0}^{T_1} \binom{T_1}{k} 
+\left[\pi \left(1 - \pi e^{-n\pi p}\right)\right]^k 
+(1-\pi)^{T_1-k}
+- (1-\pi)^{T_1}
+\]
+
+\[
+= \Big[\pi - \pi^2 e^{-n\pi p} + (1-\pi)\Big]^{T_1} - (1-\pi)^{T_1}
+\]
+
+\[
+= \left(1 - \pi^2 e^{-n\pi p}\right)^{T_1} - (1-\pi)^{T_1}
+\]
+
+
+From 1(b)(ii), we have
+\[
+\pi = \frac{1}{np}
+\]
+
+So,
+\[
+P = \left(1 - \frac{e^{-1}}{n^2 p^2}\right)^{T_1} 
+- \left(1 - \frac{1}{np}\right)^{T_1}
+\]
+
+\[
+\implies P = \left(1 - \frac{1}{e n^2 p^2}\right)^{T_1} 
+- \left(1 - \frac{1}{np}\right)^{T_1}
+\]
+\\
+\[
+\boxed{
+\begin{aligned}
+  P\big[\text{All pools that a genuinely healthy subject}\\
+  \text{participates in test positive}\big]
+  &= \left(1 - \frac{1}{e n^2 p^2}\right)^{T_1} 
+     - \left(1 - \frac{1}{np}\right)^{T_1}
+\end{aligned}
+}
+\]
+\subsubsection{1(b)(iv)}
+
+Total number of tests in Round 1:
+\[
+T_1 \; \; [\text{given}]
+\]
+
+\[
+\mathbb{E}[\text{Total number of tests in Round 2}] 
+= \sum_i x_i \, P(X = x_i)
+\]
+where $x_i$ are the number of subjects that need to be tested after Round 1.
+
+---
+
+Now, subject will be tested if  
+\[
+\begin{aligned}
+I &: \; \text{either it is positive and participated in pool}, \\
+II &: \; \text{or it is negative and participated in pool that tests positive}.
+\end{aligned}
+\]
+
+---
+
+For $P(I)$,  
+\[
+P[\text{subject is positive}] = p
+\]
+\[
+P[\text{participated in at least one pool}] = 1 - P[\text{participated in no pool}]
+= 1 - (1-\pi)^{T_1}
+\]
+\[
+\implies P(I) = p \Big[ 1 - (1-\pi)^{T_1} \Big]
+\]
+
+From 1(b)(iii), we have
+\[
+P(II) = (1 - \pi^2 e^{-n\pi p})^{T_1} 
+\quad \Big\{ \text{As participation is not must} \Big\}
+\]
+
+\[
+P(X = i) = \big(P(I) + P(II)\big)^i
+= \Big( p[1-(1-\pi)^{T_1}] + (1-\pi^2 e^{-n\pi p})^{T_1} \Big)^i
+\]
+
+Let
+\[
+p[1-(1-\pi)^{T_1}] + (1-\pi^2 e^{-n\pi p})^{T_1} = k
+\]
+
+So,
+\[
+P(X=i) = k^i
+\]
+
+---
+
+\[
+\mathbb{E}[X] = \sum_{i=0}^n \binom{n}{i} k^i (1-k)^{n-i}
+\]
+
+\[
+= n \sum_{i=1}^n \binom{n-1}{i-1} k^i (1-k)^{n-i}
+\]
+
+\[
+= nk \sum_{i=1}^n \binom{n-1}{i-1} k^{i-1} (1-k)^{n-i}
+\]
+
+\[
+= nk (1-k+k)^{n-1}
+\]
+
+\[
+= nk
+\]
+
+---
+
+\[
+\mathbb{E}[X] = np[1-(1-\pi)^{T_1}] + n(1-\pi^2 e^{-n\pi p})^{T_1}
+\]
+
+\[
+\mathbb{E}[\text{Total number of tests}] 
+= \text{Total no. of tests in Round 1} + \mathbb{E}[\text{Total no. of tests in Round 2}]
+\]
+
+\[
+= T_1 + np - np(1-\pi)^{T_1} + n(1-\pi^2 e^{-n\pi p})^{T_1}
+\]
+
+\[
+\boxed{
+\mathbb{E}[\text{Total number of tests}]
+= T_1 + np - np(1-\pi)^{T_1} + n(1-\pi^2 e^{-n\pi p})^{T_1}
+}
+\]
+\subsubsection{1(b)(v)}
+
+
+\begin{align*}
+\text{From 1(b)(iv), we have,} \\
+E[\text{Total number of tests}] 
+&= T_1 + n p - n p (1-\pi)^{T_1} + n (1-\pi^2 e^{-n \pi p})^{T_1} \\[6pt]
+\frac{dE}{dT_1} 
+&= 1 - n p (1-\pi)^{T_1} \ln(1-\pi) 
+   + n (1-\pi^2 e^{-n \pi p})^{T_1} \ln\!\big(n - n \pi^2 e^{-n \pi p}\big) \\[6pt]
+\text{We have } T_1 > 0 \\[6pt]
+1 - \pi &< 1 \;\;\Rightarrow\;\; \ln(1-\pi) < 0 
+   \;\;\Rightarrow\;\; - n p \ln(1-\pi) > 0 \\[6pt]
+\pi^2 e^{-n \pi p} &\ll 1 
+   \;\;\Rightarrow\;\; 1 - \pi^2 e^{-n \pi p} \approx 1 \\[6pt]
+&\Rightarrow n(1-\pi^2 e^{-n \pi p}) > 1 \;\; (\because n > 1) \\[6pt]
+&\Rightarrow \ln(n - n \pi^2 e^{-n \pi p}) > 0 \\[6pt]
+&\Rightarrow n (1-\pi^2 e^{-n \pi p})^{T_1} 
+   \ln(n - n \pi^2 e^{-n \pi p}) > 0 \\[6pt]
+&\Rightarrow \frac{dE}{dT_1} > 0 \quad \forall n,p,\pi \\[6pt]
+&\therefore \; E[\text{Total number of tests}] 
+   \text{ is minimum at } T_1 = 0 \\[12pt]
+\text{Putting } T_1 &= 0 \text{ in } E, \\
+&E[\text{Total number of tests}] = n
+\end{align*}
+\begin{center}
+    \boxed{\text{For $T_1 = 0$, the expected number of tests is minimised.}} \\[6pt]
+    \boxed{\text{Minimum Expected number of tests = $n$}}
+\end{center}
+
+
+
+
+\subsection{1(c)}
+\begin{figure}[h]
+\centering
+\includegraphics[width=9cm]{hw2q1_c (2).png}
+\end{figure}
+
+For the first method, the expected number of tests with optimal s from 1(a)(ii) is given by 
+\[ E[\text{total number of tests}] = 2n\sqrt{p}\]
+this shows that the expected number of tests is proportional to $\sqrt{p}$. \\
+For the second method, the expected number of total tests for optimal $\pi$ and $T_1$ from 1(b)(v) is given by
+\[ E[\text{total number of tests}]=n\]
+Hence it can be observed that the expected number of tests remain constant for all values of p when $\pi$ and $T_1$ are optimal.
+\section{Question 2}
+We want the distribution of
+\[
+Z = XY.
+\]
+
+The CDF is defined as
+\[
+F_Z(z) = P(Z \leq z) = P(XY \leq z).
+\]
+
+There are two cases depending on the sign of $X$:
+
+\[
+P(XY \leq z) 
+= P(XY \leq z, X > 0) + P(XY \leq z, X < 0).
+\]
+
+Since X can be greater than zero or less than zero,
+\[F_Z(z)=
+\int_{0}^{\infty} f_{X}(x) \int_{0}^{z/x} f_{Y}(y) \, dy \, dx.
++
+\int_{-\infty}^{0} f_{X}(x) \int_{z/x}^{\infty} f_{Y}(y) \, dy \, dx.
+\]
+
+Differentiating with respect to $z$ to get the required PDF:
+\[
+f_Z(z) = \frac{d}{dz} F_Z(z)
+= \frac{d}{dz} \left[
+\int_{0}^{\infty} f_X(x) \int_{-\infty}^{z/x} f_Y(y) \, dy \, dx
++ \int_{-\infty}^{0} f_X(x) \int_{z/x}^{\infty} f_Y(y) \, dy \, dx
+\right]
+\]
+
+\[
+= \int_{0}^{\infty} f_X(x) \, \frac{d}{dz}\!\left[ F_Y\!\left(\tfrac{z}{x}\right) - F_Y(-\infty)\right] dx
++ \int_{-\infty}^{0} f_X(x) \, \frac{d}{dz}\!\left[ F_Y(\infty) - F_Y\!\left(\tfrac{z}{x}\right)\right] dx
+\]
+
+\[
+f_Z(z) = \int_{-\infty}^{\infty} f_{X}(x)\; f_{Y}\!\left(\tfrac{z}{x}\right) \frac{1}{|x|} \, dx.
+\]
+
+\[
+\boxed{f_Z(z) = \int_{-\infty}^{\infty} f_{X}(x)\; f_{Y}\!\left(\tfrac{z}{x}\right) \frac{1}{|x|} \, dx}
+\]
+
+
+\section{Question 3}
+The expected value of any random variable X is calculated by taking average of infinite samples from the distribution. Since this method of taking average is unbiased the more accurate estimator of the expected value should be the first estimator. Showing that this estimator reduces to the expected value of the random variable-
+\begin{align*}
+E(\hat{x}) &= E\left(\frac{1}{n}\sum_{i=1}^{n}x_i\right) \\
+&= \frac{1}{n}\sum_{i=1}^{n}E(x_i) \\
+\intertext{Since the samples are from the same distribution, $E(x_i) = E(X)$ for all $i$.}
+&= \frac{1}{n}\sum_{i=1}^{n}E(X) \\
+&= \frac{1}{n} \cdot n \cdot E(X) \\
+&= E(X)
+\end{align*}
+The second estimator is incorrect since it is biased and also incorrectly because $f_X(x_i)$ is probability density function values and not the actual probabilities. The second estimator , $\hat{x} = \frac{1}{n}\sum_{i=1}^{n}f_X(x_i)x_i$, attempts to use a sort of Reimann sum to estimate the expected value but it is wrong because of the reason aforementioned. 
+\section{Question 4}
+\begin{figure}[H]
+    \centering
+    \begin{tabular}{ccc}
+    \multicolumn{3}{c}{$I_2 = I_1$        } \\[0.5em]
+        \includegraphics[width=5cm]{1.png} &
+        \includegraphics[width=5cm]{2.png} &
+        \includegraphics[width=5cm]{3.png} \\
+        \\ \\
+        \multicolumn{3}{c}{$I_2 = 255 - I_1$        } \\[0.5em]
+        
+        \includegraphics[width=5cm]{4.png} &
+        \includegraphics[width=5cm]{5.png} &
+        \includegraphics[width=5cm]{6.png} \\
+        \\ \\
+        \multicolumn{3}{c}{\[
+I_{2} = 255 \times \frac{(I_{1})^{2}}{\max \big((I_{1})^{2}\big)} + 1
+\]} \\[0.5em]
+        
+        \includegraphics[width=5cm]{7.png} &
+        \includegraphics[width=5cm]{8.png} &
+        \includegraphics[width=5cm]{9.png} \\
+    \end{tabular}
+    \caption*{Plots for $\rho$, QMI and MI vs $t_x$ in 3 cases}
+\end{figure}
+
+We measured three quantities for each image pair, $I_1$ and $I_2$: \textbf{Correlation Coefficient ($\rho$)}, \textbf{Quadratic Mutual Information (QMI)}, and \textbf{Mutual Information (MI)}. Each of these gives us different perspective on the relationship between the images which we tried to show up with the help of a matlab code\\
+We referred to definitions from Wikipedia.
+\begin{itemize}
+
+    \item{$\rho$ (Correlation Coefficient)}
+A correlation coefficient is a numerical measure of some type of \textbf{linear correlation}, meaning a statistical relationship between two variables. The variables may be two columns of a given data set of observations, often called a sample, or two components of a multivariate random variable with a known distribution. 
+
+    \item{QMI (Quadratic Mutual Information)}
+QMI reveals \textbf{nonlinear dependencies} between pixel intensities. It helps us see how the joint intensity of the images differs from their individual intensities, which is a great way to detect complex relationships that correlation might miss.
+
+    \item{MI (Mutual Information)}
+Mutual Information (MI) of two random variables is a measure of the mutual dependence between the two variables. More specifically, it quantifies the \textbf{amount of information} obtained about one random variable by observing the other random variable. 
 \end{itemize}
-For computing the joint histogram, use a bin-width of 10 in both $I_1$ and $I_2$. The joint histogram should be computed using only those pixels which are valid for both $I_1$ and $I_2$ (thus, the `zeroed-out pixels' do not count). For computing the marginal histograms, you need to integrate the joint histogram along one of the two directions respectively. You should write your own joint histogram routine in MATLAB - do \emph{not} use any inbuilt functions for it. Plot separate graphs of the values of $\rho$ versus $t_x$, QMI versus $t_x$ and MI versus $t_x$.\\
-Repeat exactly the same steps when (i) the second image is a negative of the first image, i.e. $I_2 = 255 - I_1$, and (ii) the second image is obtained as $I_2 = 255 \times (I_1)^2/\text{max}((I_1)^2) + 1$. \\
-Comment on all the plots. In particular, what do you observe regarding the relationship between the dependence measures and the alignment between the two images? Your report should contain all plots labeled properly, and the comments on them as mentioned before. \textsf{[25 points]}
 
-\item Given stuff you've learned in class, prove the following bounds: $P(X \geq x) \leq e^{-tx} \phi_X(t)$ for $t > 0$, and $P(X \leq x) \leq e^{-tx} \phi_X(t)$ for $t < 0$. Here $\phi_X(t)$ represents the MGF of random variable $X$ for parameter $t$. \\
-Now consider that $X$ denotes the sum of $n$ independent Bernoulli random variables $X_1, X_2,...,X_n$ where $E(X_i) = p_i$. Let $\mu = \sum_{i=1}^n p_i$. Then show that $P(X > (1+\delta)\mu) \leq \dfrac{e^{\mu(e^t-1)}}{e^{(1+\delta)t\mu}}$ for any $t \geq 0, \delta > 0$. You may use the inequality $1+x \leq e^x$. Further show how to tighten this bound by choosing an optimal value of $t$.
-\textsf{[15 points]}
 
-\item Consider that there are $n$ independent coin tosses with heads probability $p$. Let $T$ be the trial number at which you get the first heads. Derive a formula for $E(T)$ in terms of $p$ and/or $n$. \textsf{[10 points]}
 
-\end{enumerate}
+\subsubsection{I\textsubscript{2} = I\textsubscript{1}}
+When $t_x =0 $ the images are perfectly aligned the correlation coefficient is minimum. As we shift, common pixel values increase and thus the correlation coefficient increases. QMI and MI are maximum at $t_x=0$. With increase in shift, independence increases and thus QMI and MI decrease.
+
+\subsubsection{I\textsubscript{2} = 255 - I\textsubscript{1}}
+Here there is negative linear relationship. So correlation coefficient will be on negative end and maximum(in magnitude) when $t_x=0$. But QMI and MI do not depend on the sign, so QMI and MI decrease with increase in shift. 
+
+\subsubsection{I\textsubscript{2} = 255 $\times$ (I\textsubscript{1})\textsuperscript{2}/(max(I\textsubscript{1})\textsuperscript{2}) + 1}
+Here it is non-linear relationship. So correlation coefficient does not fully reflect dependence. But QMI and MI do not depend on linearity of relationship. They just depend on joint histograms and correctly depict relationship between the two images.
+
+\section{Question 5}
+\subsection{5(i)}
+\begin{align*}
+(i) \quad P(X \geq x) &= P\big(e^{tX} \geq e^{tx}\big) \quad (\text{for } t \geq 0, \ e^{tx} \text{ is increasing}) \\
+\text{By Markov's inequality,} \quad 
+P\big(e^{tX} \geq e^{tx}\big) &\leq \dfrac{\mathbb{E}[e^{tX}]}{e^{tx}} \\
+&\leq e^{-tx} \ \phi_X(t) \\[6pt]
+\end{align*}
+\subsection{5(ii)}
+\begin{align*}
+(ii) \quad \text{For } t < 0, \ e^{tx} \ \text{is decreasing} \\
+P(X \leq x) &= P\big(e^{tX} \geq e^{tx}\big) \\
+\text{By Markov's inequality,} \quad 
+P\big(e^{tX} \geq e^{tx}\big) &\leq \dfrac{\mathbb{E}[e^{tX}]}{e^{tx}} \\
+&\leq e^{-tx} \ \phi_X(t) \\[6pt]
+\end{align*}
+\subsection{5(iii)}
+\begin{align*}
+(iii) \quad \mathbb{E}[X_i] &= p_i \\
+\mu &= \sum_{i=1}^n p_i
+\end{align*}
+\begin{align*}
+\phi_{X_i}(t) &= \mathbb{E}\big[e^{t X_i}\big] \\
+&= 1 - p_i + p_i(e^t) \\
+P\big(X > (1+\delta)\mu\big) &\leq e^{-t(1+\delta)\mu} \ \phi_X(t), \quad (t > 0) \quad \text{(from part (i))} \\
+\phi_X(t) &= \phi_{X_1}(t) \, \phi_{X_2}(t) \cdots \phi_{X_n}(t) \quad (X_1, X_2, \dots, X_n \ \text{are independent}) \\
+\phi_{X_i}(t) &= 1 + (e^t - 1)p_i \ \leq e^{p_i(e^t-1)} \quad [1+x \leq e^x] \\
+\therefore \ \phi_X(t) &\leq \prod_{i=1}^n e^{p_i(e^t-1)} \\
+\therefore \ \phi_X(t) &\leq  e^{(e^t-1)\sum_{i=1}^n p_i} \\
+&= e^{(e^t - 1)\mu} \\
+P\big(X > (1+\delta)\mu\big) &\leq \dfrac{e^{\mu(e^t-1)}}{e^{t\mu(1+\delta)}} \\
+\text{Let } f(t) &= e^{\mu(e^t-1) - t\mu(1+\delta)} \\
+\text{To minimise f(t): } \\ f'(t) &= 0 \\
+f'(t) &= e^{\mu(e^t-1) - t\mu(1+\delta)} \left(\mu e^t - \mu(1+\delta)\right) = 0 \\
+\mu e^t &= \mu(1+\delta) \\
+e^t &= (1+\delta) \\
+t &= \ln(1+\delta) \\
+f'(t) &= e^{\mu(e^t-1) - t\mu(1+\delta)} \ \mu \big(e^t - (1+\delta)\big) \\
+f''(t) &= e^{\mu(e^t-1) - t\mu(1+\delta)} \ \mu \Big[ (e^t - (1+\delta))(\mu e^t-\mu(1+\delta)) + e^t \Big]
+\end{align*}
+\begin{align*}
+t &= \ln(s+1) \\
+f''(t) &= (\delta+1) e^{\mu \delta - \ln(\delta+1)} \mu(\delta+1) > 0 \\
+\therefore \ f(t) &\text{ is minimum at } t = \ln(\delta+1) \\
+\text{Optimal value of } t &= \ln(\delta+1)
+\end{align*}
+\begin{center}
+    \boxed{ \;
+    \text{Optimal value of t = } $\ln(\delta+1)$ \;
+    }
+\end{center}
+\section{Question 6}
+Let probability you get heads on the $i^{\text{th}}$ try be $P_i$.
+
+\[
+P_1 = p, \quad 
+P_2 = (1-p)p, \quad 
+\dots, \quad 
+P_i = (1-p)^{i-1}p, \quad 
+\dots, \quad 
+P_n = (1-p)^{n-1}p
+\]
+
+\[
+E(T) = \sum_{i=1}^n i P_i
+\]
+
+\[
+E(T) = p + 2(1-p)p + 3(1-p)^2p + \cdots + n(1-p)^{n-1}p \tag{I}
+\]
+
+\[
+E(T)(1-p) = p(1-p) + 2(1-p)^2p + \cdots + n(1-p)^np \tag{II}
+\]
+
+Subtracting (II) from (I):
+
+\[
+E(T)p = p + p(1-p) + \cdots + (1-p)^{n-1}p - n(1-p)^np
+\]
+
+\[
+E(T) = 1 + (1-p) + (1-p)^2 + \cdots + (1-p)^{n-1} - n(1-p)^n
+\]
+\[
+\begin{aligned}
+E(T) &= \frac{1 - (1-p)^n}{p} - n(1-p)^n \\
+& \\
+&\boxed{E(T) = \frac{1 - (1-p)^n}{p} - n(1-p)^n}
+\end{aligned}
+\]
 \end{document}

@@ -21,5 +21,5 @@ xlabel('p');
 ylabel('E[Total number of tests]');
 title('Plot of expected number of tests for both methods vs p');
 
-legend('First Method (optimal s)','Second Method (optimal \pi, T_1)');
-
+legend('First Method (optimal s)','Second Method (optimal \pi, T_1)','Location','southeast');
+ylim([0 1100]);
