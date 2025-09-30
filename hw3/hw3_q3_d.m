@@ -1,0 +1,15 @@
+clc; clear;
+data=dlmread('XYZ.txt');
+X=data(:,1);
+Y=data(:,2);
+Z=data(:,3);
+n=length(X);
+x=[X Y ones(n,1)];
+theta = (x' *x) \ (x' *Z);
+a=theta(1);
+b=theta(2);
+c=theta(3);
+vari=Z-x*theta;
+vari_hat=sum(vari.^2)/(n-3);
+fprintf('Predicted plane equation: Z = %.4f*X + %.4f*Y + %.4f\n', a, b, c);
+fprintf('Predicted noise variance: %.6f\n', vari_hat);

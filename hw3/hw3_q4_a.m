@@ -1,0 +1,11 @@
+clc; clear;
+mu=0;
+sigma=4;
+n=1000;
+samples = mu + sigma * randn(n, 1);
+shuffle=samples(randperm(n));
+T=shuffle(1:750);
+V=shuffle(751:end);
+disp(['Size of T: ',num2str(length(T))]);
+disp(['Size of V: ',num2str(length(V))]);
+disp(['Are T and V disjoint? ',num2str(isempty(intersect(T, V)))]);
