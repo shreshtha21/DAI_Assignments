@@ -10,6 +10,6 @@ a=theta(1);
 b=theta(2);
 c=theta(3);
 vari=Z-x*theta;
-vari_hat=sum(vari.^2)/(n-3);
+vari_hat=sum(vari.^2)/(n);
 fprintf('Predicted plane equation: Z = %.4f*X + %.4f*Y + %.4f\n', a, b, c);
 fprintf('Predicted noise variance: %.6f\n', vari_hat);
