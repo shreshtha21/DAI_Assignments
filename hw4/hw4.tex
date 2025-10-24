@@ -70,7 +70,9 @@ Plant & Before & After & $A-B$ \\
 \end{table}
 Calculate the test statistic and the $p$-value. Determine, at the 5 percent level of significance, whether the safety program has been proven to be effective. \textsf{[15 points]}
 
-\item Use the MATLAB code \texttt{readMNIST} from the homework folder to read in images of digits (0 to 9) from the well known MNIST database (particularly the file `images\_training.txt' in the folder). These images have been converted into an easy format so that I/O can be done quickly. Each image has size $28 \times 28$. Vectorize each image upon reading to create a $784 \times 1$ vector. This has can be done in MATLAB using $c = A(:);$ where $A$ is the 2D image array and $c$ is its vectorized format. For each digit (0 to 9), do the following: \textsf{[20 points]}
+\item Use the MATLAB code \texttt{readMNIST} from the homework folder to read in images of digits (0 to 9) from the well known MNIST database via a function called \begin{verbatim}[I_train,labels,I_test,labels_test] = readMNIST(); \end{verbatim}
+Here \begin{verbatim}I_train\end{verbatim} is a cell array in MATLAB. You can extract the $i$th image from this array using 
+\begin{verbatim}A=I_train{i};A=A';\end{verbatim} where \texttt{A} is a 2D unsigned integer array of size $28 \times 28$. Note that each image has size $28 \times 28$. Vectorize each image upon reading to create a $784 \times 1$ vector. This has can be done in MATLAB using \texttt{c = A(:);} where $A$ is the 2D image array and $c$ is its vectorized format. For each digit (0 to 9), do the following: \textsf{[20 points]}
 \begin{enumerate}
     \item Compute the sample covariance matrix of the vectorized images of that digit.
     \item Compute the eigenvectors and eigenvalues of that covariance matrix using the \texttt{eig} command in MATLAB.
