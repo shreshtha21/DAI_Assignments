@@ -7,7 +7,6 @@ for k = 1:length(digits)
     dig_idx=find(labels==curr_d);
     nsamples=length(dig_idx);
     data_mat=zeros(784,nsamples); 
-    
     for i=1:nsamples
         img_idx=dig_idx(i);
         A=I_train{img_idx};
