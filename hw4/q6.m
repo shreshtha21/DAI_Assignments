@@ -1,12 +1,13 @@
 clc; clear; close all;
 [I_train, labels, I_test, labels_test] = readMNIST();
-dtp = [0,3,6,7];
+digits = [0,3,6,7];
 
-for k = 1:length(dtp)
-    curr_d=dtp(k);
+for k = 1:length(digits)
+    curr_d=digits(k);
     dig_idx=find(labels==curr_d);
     nsamples=length(dig_idx);
-    data_mat=zeros(784,nsamples);  
+    data_mat=zeros(784,nsamples); 
+    
     for i=1:nsamples
         img_idx=dig_idx(i);
         A=I_train{img_idx};
@@ -14,7 +15,7 @@ for k = 1:length(dtp)
         c=A(:); 
         data_mat(:,i)=c;
     end
-
+    
     %(a)
     data_mat=double(data_mat);
     C=cov(data_mat'); 
@@ -46,6 +47,6 @@ for k = 1:length(dtp)
         imagesc(img_re); 
         colormap(gray); 
         axis image off; 
-        title(['Eigenvector ' num2str(i)], 'FontSize',12);
+        title(['Eigenvec ' num2str(i)], 'FontSize',12);
     end
 end
