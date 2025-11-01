@@ -49,6 +49,10 @@ for j=1:length(k)
     end
     recognition_rate(j)=(crct/size(test_data,2))*100;
 end
+for i=1:length(recognition_rate)
+    fprintf('k=%.0f, ', k(i))
+    fprintf('Recognition Rate: %f \n',recognition_rate(i));
+end
 figure;
 plot(k, recognition_rate, '-o', 'LineWidth', 2, 'MarkerFaceColor', 'b');
 title('Face Recognition Rate vs. Number of Eigenfaces (k)', 'FontSize', 14);
