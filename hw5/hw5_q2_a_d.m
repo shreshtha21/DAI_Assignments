@@ -46,8 +46,8 @@ for j=1:length(k)
         if predicted_label==test_labels(i)
             crct=crct+1;
         end
-        recognition_rate(j)=(crct/size(test_data,2))*100;
     end
+    recognition_rate(j)=(crct/size(test_data,2))*100;
 end
 figure;
 plot(k, recognition_rate, '-o', 'LineWidth', 2, 'MarkerFaceColor', 'b');
