@@ -134,19 +134,19 @@ end
 figure;
 plot(k, recognition_rate, '-ob', 'LineWidth', 2, 'MarkerFaceColor', 'b');
 hold on;
-plot(k, y_recognition_rate, '-or', 'LineWidth', 2, 'MarkerFaceColor', 'r');
-title('Recognition Rate (All Eigenfaces)', 'FontSize', 14);
+plot(k, recognition_rate_skip, '-or', 'LineWidth', 2, 'MarkerFaceColor', 'r');
+title('Recognition Rate', 'FontSize', 14);
 xlabel('Number of Eigenfaces (k)');
 ylabel('Recognition Rate (%)');
-legend('ORL', 'Yale');
+legend('ORL', 'ORL-skip top 3');
 grid on; xticks(k); ylim([0 100]);
 
 figure;
-plot(k, recognition_rate_skip, '-ob', 'LineWidth', 2, 'MarkerFaceColor', 'b');
+plot(k, y_recognition_rate, '-ob', 'LineWidth', 2, 'MarkerFaceColor', 'b');
 hold on;
 plot(k, y_recognition_rate_skip, '-or', 'LineWidth', 2, 'MarkerFaceColor', 'r');
-title('Recognition Rate (Skipping Top 3 Eigenfaces)', 'FontSize', 14);
+title('Recognition Rate', 'FontSize', 14);
 xlabel('Number of Eigenfaces (k)');
 ylabel('Recognition Rate (%)');
-legend('ORL - skip top 3', 'Yale - skip top 3');
+legend('Yale', 'Yale-skip top 3');
 grid on; xticks(k); ylim([0 100]);
