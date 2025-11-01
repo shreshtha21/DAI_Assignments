@@ -1,0 +1,61 @@
+clc;clear;close all;
+data=[];
+train_data=[];
+test_data=[];
+train_labels=[];
+test_labels=[];
+people=40;
+train_no=10;
+test_no=4;
+img_idx=1;
+for p=1:people
+    folder=fullfile('ORL',sprintf('s%d',p));
+    img_files=dir(fullfile(folder,'*.pgm'));
+    for i = 1:length(img_files)
+        im=imread(fullfile(folder, img_files(i).name));
+        im=double(im(:));
+        data=[data;im(:)]; 
+        if i <= train_no
+            train_data=[train_data,im(:)];
+            train_labels=[train_labels; p];
+        else
+            test_data=[test_data,im(:)];
+            test_labels=[test_labels; p];
+        end
+    end
+end
+original_face=train_data(:,img_idx);
+mean_train=mean(train_data,2);
+A=train_data-mean_train*ones(1, size(train_data, 2));
+L=A' * A;
+[V,D]=eig(L);
+[eigenvals,idx]=sort(diag(D),'descend');
+V=V(:,idx);
+kc=10;
+V=A*V;
+V=normc(V);
+k=[2,10,20,50,75,100,125,150,175];
+figure;
+subplot(4,3,1);
+imshow(reshape(original_face, 112, 92), []);
+title('Original Face');
+for j=1:length(k)
+    kc=k(j);
+    U=V(:,1:kc);
+    coeff=U'*(original_face-mean_train);
+    reconstructed=mean_train+U*coeff;
+    subplot(4,3,j+1);
+    imshow(reshape(reconstructed, 112, 92), []);
+    title(['k = ', num2str(kc)]);
+end
+sgtitle('Face Reconstruction using Different Numbers of Eigenfaces');
+figure;
+for i = 1:25
+    subplot(5,5,i);
+    eigenface = reshape(V(:,i), 112, 92);
+    imagesc(eigenface);
+    colormap gray;
+    axis off;
+    title(['EF ', num2str(i)]);
+end
+sgtitle('Top 25 Eigenfaces');
