@@ -26,7 +26,6 @@ for p=1:people
 end
 mean_train=mean(train_data,2);
 A=train_data-mean_train*ones(1, size(train_data, 2));
-size(A)
 L=A' * A;
 [V,D]=eig(L);
 [eigenvals,idx]=sort(diag(D),'descend');
