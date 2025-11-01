@@ -92,7 +92,6 @@ for p=1:y_people
 end
 y_mean_train=mean(y_train_data,2);
 A=y_train_data-y_mean_train*ones(1, size(y_train_data, 2));
-size(A)
 L=A' * A;
 [V,D]=eig(L);
 [eigenvals,idx]=sort(diag(D),'descend');
