@@ -138,7 +138,7 @@ plot(k, recognition_rate_skip, '-or', 'LineWidth', 2, 'MarkerFaceColor', 'r');
 title('Recognition Rate', 'FontSize', 14);
 xlabel('Number of Eigenfaces (k)');
 ylabel('Recognition Rate (%)');
-legend('ORL', 'ORL-skip top 3');
+legend('ORL', 'ORL-skip top 3','Location', 'southeast');
 grid on; xticks(k); ylim([0 100]);
 
 figure;
