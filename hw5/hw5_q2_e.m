@@ -62,5 +62,6 @@ ylabel('Recognition Rate (%)', 'FontSize', 12);
 grid on;
 xticks(k);
 xtickangle(45);
-ylim([0 100]);
+ylim([0 35]);
+xlim([0 200]);
 legend('Recognition Rate', 'Location', 'SouthEast')
